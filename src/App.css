@@ -1,15 +1,21 @@
 body{
-    background-color: rgb(51, 50, 50);
-    color:aliceblue;
+    background-color: rgb(36, 37, 43);
+    color:#74b4a4;
     font-family: 'Nunito', sans-serif;
 }
 
-.poke_elec{
+.poke{
+    min-width: 500px;
+    min-height: 500px;
+    background-color: aliceblue;
     outline-style: groove;
     outline-color: yellow;
     outline-width: 10px;
     padding: 5px;
     margin: 5px;
+
+    display: flex;
+    justify-content: center;
 }
 
 #root{
@@ -23,17 +29,57 @@ body{
 }
 
 #test_btn{
-    background-color: rgb(51, 50, 50);
-    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 30px;
+    color: #74b4a4;
+    background-color: rgb(31, 32, 36);
+    border: 2px solid #74b4a4;
+    border-radius: 15px;
+    transition-duration: 0.25s;
     
     padding: 5px;
     margin: 5px;
     margin-bottom: 10px;
 }
+
 #test_btn:hover{
+    color: rgb(31, 32, 36);
+    background-color: #74b4a4;
+}
+
+#test_btn:active{
     background-color: aquamarine;
 }
 
 #test_text{
+    font-size: 30px;
+    border-radius: 15px;
+    border: 2px solid #74b4a4;
+    padding: 5px;
     margin: 5px;
+    transition-duration: 0.25s;
+}
+
+#test_text:hover{
+    color: rgb(31, 32, 36);
+    background-color: #74b4a4;
+}
+
+.test_input{
+    display: flex;
+    padding: 10px;
+}
+
+.box{
+    display: flex;
+    width: 400px;
+    color: #74b4a4;
+    background-color: rgb(36, 37, 43);
+    border: 2px solid #74b4a4;
+    text-align: center;
+}
+
+.box:focus{
+    border: 4px solid #79d1bb;
+    outline: none;
 }
