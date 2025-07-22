@@ -7,14 +7,14 @@ function App() {
 
   return (
     <>
-      <div>
+      <div id="test_text">
         Test
       </div>
-      <button>
+      <button id="test_btn">
         TEST BUTTON
       </button>
-      <div>
-        <img className="poke_elec" src="/stuffed_pika.jpg"/>
+      <div className="poke_elec">
+        <img src="/stuffed_pika.jpg"/>
       </div>
     </>
   )

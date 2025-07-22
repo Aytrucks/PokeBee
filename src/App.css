@@ -1,5 +1,39 @@
+body{
+    background-color: rgb(51, 50, 50);
+    color:aliceblue;
+    font-family: 'Nunito', sans-serif;
+}
+
 .poke_elec{
     outline-style: groove;
     outline-color: yellow;
     outline-width: 10px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#root{
+    display: flex;
+    margin: 0 auto;
+    min-height: 850px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+#test_btn{
+    background-color: rgb(51, 50, 50);
+    border: none;
+    
+    padding: 5px;
+    margin: 5px;
+    margin-bottom: 10px;
+}
+#test_btn:hover{
+    background-color: aquamarine;
+}
+
+#test_text{
+    margin: 5px;
 }
