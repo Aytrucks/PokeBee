@@ -1,25 +1,37 @@
 import { useState } from 'react'
 import './App.css'
+import BattlePage from './components/BattlePage'
+import HomePage from './components/HomePage'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [type, setType] = useState("home")
 
-  return (
-    <>
-      <div id="test_text">
-        TEST
-      </div>
-      <button id="test_btn">
-        TEST BUTTON
-      </button>
-      <div className="poke">
-        <img src="/stuffed_pika.jpg"/>
-      </div>
-      <div class="test_input">
-        <input class="box"/>
-      </div>
-    </>
-  )
+  const test_click = () => {
+    console.log("Clicked!")
+    setType("dex")
+  }
+
+  const home_click = () => {
+    console.log("Clicked home_click")
+    setType("home")
+  }
+  if(type === "home"){
+    return (
+        <>
+          <HomePage click={test_click}/>
+          
+        </>
+      )
+  }
+  else if(type === "dex"){
+    return (
+        <>
+          <BattlePage click={home_click}/>
+          
+        </>
+      )    
+  }
+  
 }
 
 export default App
