@@ -46,6 +46,10 @@ button{
     margin-bottom: 10px;
 }
 
+form{
+    background-color: rgb(31, 32, 36);
+}
+
 button:hover{
     color: rgb(31, 32, 36);
     background-color: #74b4a4;

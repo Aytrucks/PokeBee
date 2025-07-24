@@ -1,4 +1,18 @@
+import { useState } from "react"
+
 const BattlePage = (props) => {
+    
+    const [name, setName] = useState("")
+
+    const handleSetName = (event) => {
+        setName(event.target.value)
+    }
+
+    const submitName = (event) => {
+        event.preventDefault()
+        console.log(name)
+    }
+
     return (
     <>
         <div>
@@ -31,9 +45,9 @@ const BattlePage = (props) => {
                 Ability 2
             </div>
         </div>
-        <div className="test_input">
-            <input id="textbox"/>
-        </div>
+        <form onSubmit={submitName} className="test_input">
+            <input id="textbox" value={name} onChange={handleSetName}/>
+        </form>
       </div>
       
     </>
