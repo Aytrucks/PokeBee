@@ -13,9 +13,29 @@ const BattlePage = (props) => {
       <div className="pokebox">
         <img src="../src/assets/bulbapedia_ivysaur.png" id="pika"/>
       </div>
-      <div className="test_input">
-        <input className="textbox"/>
+      <div>
+        
+        <div className="container_poke">
+            <div className="attrib">
+                Type1
+            </div>
+            <div className="attrib">
+                Type2
+            </div>
+        </div>
+        <div className="container_poke">
+            <div className="attrib">
+                Ability 1
+            </div>
+            <div className="attrib">
+                Ability 2
+            </div>
+        </div>
+        <div className="test_input">
+            <input id="textbox"/>
+        </div>
       </div>
+      
     </>
   )
 

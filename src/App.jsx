@@ -17,10 +17,10 @@ function App() {
   }
   if(type === "home"){
     return (
-        <>
+        <div>
           <HomePage click={test_click}/>
           
-        </>
+        </div>
       )
   }
   else if(type === "dex"){
