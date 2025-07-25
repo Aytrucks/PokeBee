@@ -1,13 +1,23 @@
 import { useState } from "react"
+import { useEffect } from "react"
+import Pokemon from '../services/pokedex'
 
 const BattlePage = (props) => {
     
+    const [data, setData] = useState(null)
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
     const [type1, setType1] = useState("?")
     const [attrib1, setAttrib1] = useState("attrib")
     const [type2, setType2] = useState("?")
     const [attrib2, setAttrib2] = useState("attrib")
+
+    const hook = () => {
+        Pokemon.getAll().then(response=>{
+            setData(response)
+        })
+    }
+    useEffect(hook, [])
 
     const handleSetName = (event) => {
         setName(event.target.value)       
@@ -16,18 +26,24 @@ const BattlePage = (props) => {
     const submitName = (event) => {
         event.preventDefault()
         console.log(name)
-        if(name === ""){
-            setGuess("Nice guess dude.")
-        }
-        else{
-            setGuess(name)
-        }
+        console.log(
+            `The name of the poke is ${data.name}`,
+            `The data is ${data}`
+        )
+        setGuess(name === "" ? "Nice guess dude." : name);
+
         if(name === "Ivysaur"){
             setType1("Grass")
             setAttrib1("attrib grass")
             setType2("Poison")
             setAttrib2("attrib poison")
-        }  
+        } 
+        else{
+            setType1("?")
+            setAttrib1("attrib")
+            setType2("?")
+            setAttrib2("attrib")
+        } 
     }
 
     return (
