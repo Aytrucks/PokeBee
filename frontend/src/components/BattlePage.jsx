@@ -25,18 +25,16 @@ const BattlePage = (props) => {
 
     const submitName = (event) => {
         event.preventDefault()
-        console.log(name)
-        console.log(
-            `The name of the poke is ${data.name}`,
-            `The data is ${data}`
-        )
+        console.log(`The name of the poke is ${data.name}`)
+        console.log(data.types[0].type.name)
+        console.log(data.types[1].type.name)
         setGuess(name === "" ? "Nice guess dude." : name);
 
-        if(name === "Ivysaur"){
+        if(name.toLowerCase() === "ivysaur"){
             setType1("Grass")
-            setAttrib1("attrib grass")
+            setAttrib1(`attrib ${data.types[0].type.name}`)
             setType2("Poison")
-            setAttrib2("attrib poison")
+            setAttrib2(`attrib ${data.types[1].type.name}`)
         } 
         else{
             setType1("?")
