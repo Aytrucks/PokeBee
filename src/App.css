@@ -8,6 +8,12 @@ body{
 
 }
 
+#battle_header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .pokebox{
     min-width: 500px;
     min-height: 500px;
@@ -27,8 +33,7 @@ body{
     min-height: 850px;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    
+    justify-content: center; 
 }
 
 button{
@@ -59,7 +64,7 @@ button:active{
     background-color: aquamarine;
 }
 
-#test_text{
+.test_text{
     font-size: 30px;
     font-weight: 900;
     border-radius: 15px;
@@ -71,13 +76,39 @@ button:active{
     transition-duration: 0.25s;
 }
 
-#test_text:hover{
+.test_text:hover{
     box-shadow: 0 0 30pt 2pt #74b4a4;
 }
 
 .test_input{
-    display: flex;
     padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#guess_text{
+    color: #9274b4;
+    background-color: rgb(31, 32, 36);
+    border: 2px solid #9274b4;
+    border-radius: 8px;
+}
+
+#guess_text:hover{
+    box-shadow: 0 0 30pt 2pt #9274b4;
+}
+
+#guess_submit{
+    color: #9274b4;
+    background-color: rgb(31, 32, 36);
+    border: 2px solid #9274b4;
+    border-radius: 8px;
+}
+
+#guess_submit:hover{
+    color: rgb(31, 32, 36);
+    background-color: #9274b4;
 }
 
 #textbox{
@@ -98,7 +129,7 @@ button:active{
 }
 
 #textbox:hover{
-    box-shadow: 0 0 30pt 2pt #74b4a4;
+    box-shadow: 0 0 3pt 2pt #74b4a4;
 }
 
 #pika{
@@ -119,8 +150,12 @@ button:active{
 
 .attrib{
     min-width: 200px;
-    box-shadow: 0 0 1pt 2pt #74b4a4;
+    box-shadow: 0 0 1pt 1pt #74b4a4;
     text-align: center;
+    margin-left: 4px;
+    margin-right: 4px;
+
+    transition-duration: 2s;
 }
 
 #home_container{
@@ -134,4 +169,14 @@ button:active{
 #home_button{
     display: flex;
     align-self: center;
+}
+
+.attrib.grass{
+    color: #87eb97;
+    box-shadow: 0 0 1pt 1pt #87eb97;
+}
+
+.attrib.poison{
+    color: #bb87eb;
+    box-shadow: 0 0 1pt 1pt #bb87eb;
 }

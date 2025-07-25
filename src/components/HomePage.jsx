@@ -1,7 +1,7 @@
 const HomePage = (props)=>{
     return (
     <div  id="home_container">
-      <div id="test_text">
+      <div class="test_text">
         Home Page
       </div>
 
