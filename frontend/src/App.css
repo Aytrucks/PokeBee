@@ -137,6 +137,8 @@ button:active{
     height: 300px;
     display: flex;
     align-self: center;
+
+    transition-duration: 0.5s;
 }
 
 .container_poke{

@@ -7,10 +7,15 @@ const BattlePage = (props) => {
     const [data, setData] = useState(null)
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
+    const [img, setImg] = useState("../src/assets/react.svg")
+
     const [type1, setType1] = useState("?")
     const [attrib1, setAttrib1] = useState("attrib")
+    const [ability1, setAbility1] = useState("?")
+
     const [type2, setType2] = useState("?")
     const [attrib2, setAttrib2] = useState("attrib")
+    const [ability2, setAbility2] = useState("?")
 
     const hook = () => {
         Pokemon.getAll().then(response=>{
@@ -26,17 +31,23 @@ const BattlePage = (props) => {
     const submitName = (event) => {
         event.preventDefault()
         console.log(`The name of the poke is ${data.name}`)
-        console.log(data.types[0].type.name)
-        console.log(data.types[1].type.name)
+        console.log(data)
+        console.log(data.abilities[0].ability.name)
         setGuess(name === "" ? "Nice guess dude." : name);
 
         if(name.toLowerCase() === "ivysaur"){
+            setImg("../src/assets/bulbapedia_ivysaur.png")
+
             setType1("Grass")
             setAttrib1(`attrib ${data.types[0].type.name}`)
+            setAbility1(data.abilities[0].ability.name)
+
             setType2("Poison")
             setAttrib2(`attrib ${data.types[1].type.name}`)
+            setAbility2(data.abilities[1].ability.name)
         } 
         else{
+            setImg("../src/assets/react.svg")
             setType1("?")
             setAttrib1("attrib")
             setType2("?")
@@ -60,7 +71,7 @@ const BattlePage = (props) => {
         </div>
       
       <div className="pokebox">
-        <img src="../src/assets/bulbapedia_ivysaur.png" id="pika"/>
+        <img src= {img} id="pika"/>
       </div>
       <div>
         
@@ -74,10 +85,10 @@ const BattlePage = (props) => {
         </div>
         <div className="container_poke">
             <div className="attrib">
-                Ability1
+                {ability1}
             </div>
             <div className="attrib">
-                Ability 2
+                {ability2}
             </div>
         </div>
         <form onSubmit={submitName} className="test_input">
