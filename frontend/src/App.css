@@ -93,6 +93,13 @@ button:active{
     background-color: rgb(31, 32, 36);
     border: 2px solid #9274b4;
     border-radius: 8px;
+
+    transition-duration: 0.25s;
+}
+
+#guess_text.correct{
+    color: #f7ca69;
+    border: 2px solid #f7ca69;
 }
 
 #guess_text:hover{

@@ -3,8 +3,10 @@ import { useEffect } from "react"
 import Pokemon from '../services/pokedex'
 
 const BattlePage = (props) => {
+    //TODO: Make a object state that holds all the values of the answer poke and the guess poke
     
     const [data, setData] = useState(null)
+    const [guessClass, setGuessClass] = useState("test_text")
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
     const [img, setImg] = useState("../src/assets/react.svg")
@@ -37,6 +39,7 @@ const BattlePage = (props) => {
 
         if(name.toLowerCase() === "ivysaur"){
             setImg("../src/assets/bulbapedia_ivysaur.png")
+            setGuessClass("test_text correct")
 
             setType1("Grass")
             setAttrib1(`attrib ${data.types[0].type.name}`)
@@ -46,12 +49,29 @@ const BattlePage = (props) => {
             setAttrib2(`attrib ${data.types[1].type.name}`)
             setAbility2(data.abilities[1].ability.name)
         } 
+        else if(name.toLowerCase() === "bulbasaur"){
+            setImg("../src/assets/react.svg")
+            setGuessClass("test_text")
+            
+            setType1("Grass")
+            setAttrib1(`attrib ${data.types[0].type.name}`)
+            setAbility1(data.abilities[0].ability.name)
+
+            setType2("Poison")
+            setAttrib2(`attrib ${data.types[1].type.name}`)
+            setAbility2(data.abilities[1].ability.name)
+        }
         else{
             setImg("../src/assets/react.svg")
+            setGuessClass("test_text")
+
             setType1("?")
             setAttrib1("attrib")
+            setAbility1("?")
+
             setType2("?")
             setAttrib2("attrib")
+            setAbility2("?")
         } 
     }
 
@@ -64,7 +84,7 @@ const BattlePage = (props) => {
             <button id="test_btn" onClick={props.click}>
                 Back to Home
             </button>
-            <div className="test_text" id="guess_text">
+            <div className={guessClass} id="guess_text">
                 {guess}
             </div>
             
