@@ -6,6 +6,7 @@ const BattlePage = (props) => {
     //TODO: Make a object state that holds all the values of the answer poke and the guess poke
     
     const [data, setData] = useState(null)
+    const [poke, setPoke] = useState({})
     const [guessClass, setGuessClass] = useState("test_text")
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
@@ -19,12 +20,30 @@ const BattlePage = (props) => {
     const [attrib2, setAttrib2] = useState("attrib")
     const [ability2, setAbility2] = useState("?")
 
-    const hook = () => {
-        Pokemon.getAll().then(response=>{
-            setData(response)
+    
+    useEffect(() => {
+        async function hook(){
+        try{
+            const res = await Pokemon.getAll()
+            
+            setData(res)
+            setPoke({
+            name:res.name,
+            type1: res.types[0].type.name,
+            type2: res.types[1].type.name ? res.types[1].type.name:"null",
+            ability1:res.abilities[0].ability.name,
+            ability2:res.abilities[1].ability.name ? res.abilities[1].ability.name : "null"
         })
-    }
-    useEffect(hook, [])
+            console.log("res", res)
+        }
+        catch(error){
+            console.error("We couldn't get the poke")
+        }
+        }
+        hook()
+        
+        
+    }, [])
 
     const handleSetName = (event) => {
         setName(event.target.value)       
@@ -33,8 +52,10 @@ const BattlePage = (props) => {
     const submitName = (event) => {
         event.preventDefault()
         console.log(`The name of the poke is ${data.name}`)
-        console.log(data)
-        console.log(data.abilities[0].ability.name)
+        console.log(poke)
+        
+
+
         setGuess(name === "" ? "Nice guess dude." : name);
 
         if(name.toLowerCase() === "ivysaur"){
@@ -42,7 +63,7 @@ const BattlePage = (props) => {
             setGuessClass("test_text correct")
 
             setType1("Grass")
-            setAttrib1(`attrib ${data.types[0].type.name}`)
+            setAttrib1(`attrib ${poke.type1}`)
             setAbility1(data.abilities[0].ability.name)
 
             setType2("Poison")
@@ -50,6 +71,7 @@ const BattlePage = (props) => {
             setAbility2(data.abilities[1].ability.name)
         } 
         else if(name.toLowerCase() === "bulbasaur"){
+                    
             setImg("../src/assets/react.svg")
             setGuessClass("test_text")
             
