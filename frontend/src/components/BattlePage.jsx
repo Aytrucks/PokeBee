@@ -40,14 +40,13 @@ const BattlePage = (props) => {
             
             setData(res)
             setPoke({
-            name:res.name,
+            name: res.name,
             type1: res.types[0].type.name,
             type2: res.types[1]?.type.name ||"none",
-            ability1:res.abilities[0].ability.name,
-            ability2:res.abilities[1]?.ability.name || "none"
-        })
-            console.log("res", res)
-            console.log(gen1)
+            ability1: res.abilities[0].ability.name,
+            ability2: res.abilities[1]?.ability.name || "none",
+            img: res.sprites["other"]['official-artwork']['front_default']
+        })          
         }
         catch(error){
             console.error("We couldn't get the poke")
@@ -72,7 +71,7 @@ const BattlePage = (props) => {
         setGuess(name === "" ? "Nice guess dude." : name);
 
         if(name.toLowerCase() === poke.name){
-            setImg("../src/assets/bulbapedia_ivysaur.png")
+            setImg(poke.img)
             setGuessClass("test_text correct")
 
             setType1("Grass")
@@ -97,7 +96,7 @@ const BattlePage = (props) => {
             setAbility2(data.abilities[1].ability.name)
         }
         else{
-            setImg("../src/assets/react.svg")
+            setImg("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/2.png")
             setGuessClass("test_text")
 
             setType1("?")

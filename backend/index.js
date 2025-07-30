@@ -2,9 +2,8 @@ const express = require('express')
 const axios = require('axios')
 const app = express()
 
+app.use(express.static('dist'))
 app.use(express.json())
-
-
 
 app.get('/', async (req, res)=>{
     const imageurl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/2.gif"
@@ -19,7 +18,7 @@ app.get('/', async (req, res)=>{
 })
 
 app.get('/api/test', async (req, res)=>{
-    const url = "https://pokeapi.co/api/v2/pokemon/ivysaur"
+    const url = "https://pokeapi.co/api/v2/pokemon/squirtle"
     try{
         const req2 = await axios.get(url)
         const data = req2.data
