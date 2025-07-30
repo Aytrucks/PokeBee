@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const url = "https://pokeapi.co/api/v2/pokemon/ivysaur"
+const url = "http://localhost:3002/api/test"
 
 const getAll = () =>{
     const req = axios.get(url)

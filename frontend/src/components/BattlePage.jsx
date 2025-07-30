@@ -1,12 +1,24 @@
 import { useState } from "react"
 import { useEffect } from "react"
-import Pokemon from '../services/pokedex'
+import Pokedex from '../services/pokedex'
+import Pokemon from "../models/Pokemon"
+import { generation1PokemonNames } from '../services/pokemonNames'
+
+const gen1 = generation1PokemonNames
+
+const FilterSuggestion = (props) => {
+    const list = props.list
+    return <div>
+
+    </div>
+}
 
 const BattlePage = (props) => {
     //TODO: Make a object state that holds all the values of the answer poke and the guess poke
     
     const [data, setData] = useState(null)
     const [poke, setPoke] = useState({})
+    const [guessPoke, setGuessPoke] = useState({})
     const [guessClass, setGuessClass] = useState("test_text")
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
@@ -24,17 +36,18 @@ const BattlePage = (props) => {
     useEffect(() => {
         async function hook(){
         try{
-            const res = await Pokemon.getAll()
+            const res = await Pokedex.getAll()
             
             setData(res)
             setPoke({
             name:res.name,
             type1: res.types[0].type.name,
-            type2: res.types[1].type.name ? res.types[1].type.name:"null",
+            type2: res.types[1]?.type.name ||"none",
             ability1:res.abilities[0].ability.name,
-            ability2:res.abilities[1].ability.name ? res.abilities[1].ability.name : "null"
+            ability2:res.abilities[1]?.ability.name || "none"
         })
             console.log("res", res)
+            console.log(gen1)
         }
         catch(error){
             console.error("We couldn't get the poke")
@@ -51,14 +64,14 @@ const BattlePage = (props) => {
 
     const submitName = (event) => {
         event.preventDefault()
-        console.log(`The name of the poke is ${data.name}`)
-        console.log(poke)
+        console.log(`The name of the poke is ${poke.name}`)
+        
         
 
 
         setGuess(name === "" ? "Nice guess dude." : name);
 
-        if(name.toLowerCase() === "ivysaur"){
+        if(name.toLowerCase() === poke.name){
             setImg("../src/assets/bulbapedia_ivysaur.png")
             setGuessClass("test_text correct")
 
@@ -67,7 +80,7 @@ const BattlePage = (props) => {
             setAbility1(data.abilities[0].ability.name)
 
             setType2("Poison")
-            setAttrib2(`attrib ${data.types[1].type.name}`)
+            setAttrib2(`attrib ${poke.type2}`)
             setAbility2(data.abilities[1].ability.name)
         } 
         else if(name.toLowerCase() === "bulbasaur"){

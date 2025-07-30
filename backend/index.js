@@ -4,6 +4,8 @@ const app = express()
 
 app.use(express.json())
 
+
+
 app.get('/', async (req, res)=>{
     const imageurl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/2.gif"
     try{
@@ -18,10 +20,16 @@ app.get('/', async (req, res)=>{
 
 app.get('/api/test', async (req, res)=>{
     const url = "https://pokeapi.co/api/v2/pokemon/ivysaur"
-    const req2 = await axios.get(url)
-    const data = req2.data
-
-    res.json(data)
+    try{
+        const req2 = await axios.get(url)
+        const data = req2.data
+        console.log("Trying to send from the EP")
+        res.json(data)
+    }
+    catch(error){
+        res.status(500).send("FUCK DUDE")
+    }
+    
 })
 
 const PORT = process.env.PORT || 3002
