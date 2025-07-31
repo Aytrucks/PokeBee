@@ -34,6 +34,20 @@ app.get('/api/test', async (req, res)=>{
     
 })
 
+app.post('/api/test', async (req, res)=>{
+    const body = req.body
+    const url = `https://pokeapi.co/api/v2/pokemon/${body.name}`
+    try{
+        console.log("Poke name is", body.name)
+        const req2 = await axios.get(url)
+        res.json(req2.data)
+    }
+    catch(error){
+        res.status(500).send("NOOOO")
+    }
+    
+})
+
 const PORT = process.env.PORT || 3002
 app.listen(PORT, () => {
   console.log(`Server b runnin on that port over on ${PORT}`)

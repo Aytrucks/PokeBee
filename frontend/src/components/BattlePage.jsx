@@ -42,8 +42,9 @@ const BattlePage = (props) => {
     
     const [data, setData] = useState(null)
     const [poke, setPoke] = useState({})
-    const [guessPoke, setGuessPoke] = useState({})
+
     const [guessClass, setGuessClass] = useState("test_text")
+
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
     const [img, setImg] = useState("../src/assets/react.svg")
@@ -66,7 +67,6 @@ const BattlePage = (props) => {
             
             setData(res)
             const mainPoke = new Pokemon(res)
-            console.log(mainPoke)
             setPoke(mainPoke)
         }
         catch(error){
@@ -79,18 +79,17 @@ const BattlePage = (props) => {
     const handleSetName = (event) => {       
         setName(event.target.value)    
         setPossibleNames(generation1PokemonNames.filter(pokename=>pokename.toLowerCase().includes(name.toLowerCase())))
-        
     }
 
-
-    const submitName = (event) => {
+    const submitName = async (event) => {
         event.preventDefault()
         console.log(`The name of the poke is ${poke.name}`)
 
-        setGuess(name === "" ? "Nice guess dude." : name);
+        
         
         if(name.toLowerCase() === poke.name){
             setImg(poke.img)
+            setGuess(`${poke.name}`)
             setGuessClass("test_text correct")
 
             setType1(`${poke.type1}`)
@@ -101,31 +100,45 @@ const BattlePage = (props) => {
             setAttrib2(`attrib ${poke.type2}`)
             setAbility2(poke.ability2)
         } 
-        else if(name.toLowerCase() === "bulbasaur"){
-                    
-            setImg("../src/assets/react.svg")
-            setGuessClass("test_text")
-            
-            setType1("Grass")
-            setAttrib1(`attrib ${poke.type1}`)
-            setAbility1(data.abilities[0].ability.name)
-
-            setType2("Poison")
-            setAttrib2(`attrib ${poke.type2}`)
-            setAbility2(data.abilities[1].ability.name)
-        }
         else{
-            setImg("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/2.png")
-            setGuessClass("test_text")
-
-            setType1("?")
-            setAttrib1("attrib")
-            setAbility1("?")
-
-            setType2("?")
-            setAttrib2("attrib")
-            setAbility2("?")
-        } 
+            let names = generation1PokemonNames.map(pokename =>{
+                return pokename.toLowerCase()
+            })
+            if(names.includes(name.toLowerCase())){
+                try{
+                    const res = await Pokedex.sendPoke({
+                        name:`${name}`
+                    })
+                    const guessPoke = new Pokemon(res)
+                    console.log(guessPoke)
+                    console.log(poke)
+                    if(poke.type1 === guessPoke.type1 || poke.type1 === guessPoke.type2){
+                        setType1(`${poke.type1}`)
+                        setAttrib1(`attrib ${poke.type1}`)
+                    }
+                    if(poke.type2 === guessPoke.type1 || poke.type2 === guessPoke.type2){
+                        setType2(`${poke.type2}`)
+                        setAttrib2(`attrib ${poke.type2}`)
+                    }
+                    if(poke.ability1 === guessPoke.ability1 || poke.ability1 === guessPoke.ability2){
+                        setAbility1(poke.ability1)
+                    }
+                    if(poke.ability2 === guessPoke.ability1 || poke.ability2 === guessPoke.ability2){
+                        setAbility2(poke.ability2)
+                    }
+                    
+                }
+                catch(error){
+                    console.error(error)
+                }
+                
+            }
+            else{
+                setGuess(name === "" ? "Nice guess dude." : "Not a Pokemon");
+            }
+            
+            
+        }
     }
 
     return (

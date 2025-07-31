@@ -13,6 +13,12 @@ const getAll = () =>{
     })
 }
 
+const sendPoke = (poke) => {
+    const req = axios.post(url, poke)
+    return req.then(output => output.data).catch(error=>console.log("There has been an error"))
+}
+
 export default {
     getAll : getAll,
+    sendPoke : sendPoke,
 }
