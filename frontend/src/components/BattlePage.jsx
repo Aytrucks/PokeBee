@@ -7,10 +7,34 @@ import { generation1PokemonNames } from '../services/pokemonNames'
 const gen1 = generation1PokemonNames
 
 const FilterSuggestion = (props) => {
+    const [show, setShow] = useState(false)
     const list = props.list
-    return <div>
 
-    </div>
+    useEffect(()=>{
+        const timer = setTimeout(()=>{
+            setShow(true)
+        }, 1000)
+        return () =>{
+            clearTimeout(timer)
+            setShow(false)
+        }
+    },[list])
+
+    if(list.length === 0 && show){
+        return <div>
+            No Suggestions Yet!
+        </div>
+    }
+    if(list.length <= 10 && show){
+        return <ul>
+        {
+            list.map(item => 
+                <li key={item}>{item}</li>
+            )
+        }
+    </ul>
+    }
+    
 }
 
 const BattlePage = (props) => {
@@ -23,6 +47,8 @@ const BattlePage = (props) => {
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
     const [img, setImg] = useState("../src/assets/react.svg")
+
+    const [possibleNames, setPossibleNames] = useState([])
 
     const [type1, setType1] = useState("?")
     const [attrib1, setAttrib1] = useState("attrib")
@@ -39,48 +65,41 @@ const BattlePage = (props) => {
             const res = await Pokedex.getAll()
             
             setData(res)
-            setPoke({
-            name: res.name,
-            type1: res.types[0].type.name,
-            type2: res.types[1]?.type.name ||"none",
-            ability1: res.abilities[0].ability.name,
-            ability2: res.abilities[1]?.ability.name || "none",
-            img: res.sprites["other"]['official-artwork']['front_default']
-        })          
+            const mainPoke = new Pokemon(res)
+            console.log(mainPoke)
+            setPoke(mainPoke)
         }
         catch(error){
             console.error("We couldn't get the poke")
         }
         }
         hook()
-        
-        
     }, [])
 
-    const handleSetName = (event) => {
-        setName(event.target.value)       
+    const handleSetName = (event) => {       
+        setName(event.target.value)    
+        setPossibleNames(generation1PokemonNames.filter(pokename=>pokename.toLowerCase().includes(name.toLowerCase())))
+        
     }
+
 
     const submitName = (event) => {
         event.preventDefault()
         console.log(`The name of the poke is ${poke.name}`)
-        
-        
-
 
         setGuess(name === "" ? "Nice guess dude." : name);
-
+        
         if(name.toLowerCase() === poke.name){
             setImg(poke.img)
             setGuessClass("test_text correct")
 
-            setType1("Grass")
+            setType1(`${poke.type1}`)
             setAttrib1(`attrib ${poke.type1}`)
-            setAbility1(data.abilities[0].ability.name)
+            setAbility1(poke.ability1)
 
-            setType2("Poison")
+            setType2(`${poke.type2}`)
             setAttrib2(`attrib ${poke.type2}`)
-            setAbility2(data.abilities[1].ability.name)
+            setAbility2(poke.ability2)
         } 
         else if(name.toLowerCase() === "bulbasaur"){
                     
@@ -88,11 +107,11 @@ const BattlePage = (props) => {
             setGuessClass("test_text")
             
             setType1("Grass")
-            setAttrib1(`attrib ${data.types[0].type.name}`)
+            setAttrib1(`attrib ${poke.type1}`)
             setAbility1(data.abilities[0].ability.name)
 
             setType2("Poison")
-            setAttrib2(`attrib ${data.types[1].type.name}`)
+            setAttrib2(`attrib ${poke.type2}`)
             setAbility2(data.abilities[1].ability.name)
         }
         else{
@@ -127,7 +146,7 @@ const BattlePage = (props) => {
       <div className="pokebox">
         <img src= {img} id="pika"/>
       </div>
-      <div>
+      <div className="bottom_container">
         
         <div className="container_poke">
             <div className={attrib1}>
@@ -146,7 +165,8 @@ const BattlePage = (props) => {
             </div>
         </div>
         <form onSubmit={submitName} className="test_input">
-            <input id="textbox" value={name} onChange={handleSetName}/>
+            <input id="textbox" value={name} onChange={handleSetName} autocomplete="off"/>
+            <FilterSuggestion list={possibleNames}/>
             <button id="guess_submit" type="submit">Enter</button>
         </form>
       </div>

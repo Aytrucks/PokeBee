@@ -1,6 +1,7 @@
 const express = require('express')
 const axios = require('axios')
 const app = express()
+const generation1PokemonNames = require('./assets/pokemonNames.js')
 
 app.use(express.static('dist'))
 app.use(express.json())
@@ -18,11 +19,13 @@ app.get('/', async (req, res)=>{
 })
 
 app.get('/api/test', async (req, res)=>{
-    const url = "https://pokeapi.co/api/v2/pokemon/squirtle"
+    const random = Math.floor(Math.random()*151)
+    const url = `https://pokeapi.co/api/v2/pokemon/${generation1PokemonNames[random]}`
     try{
         const req2 = await axios.get(url)
         const data = req2.data
         console.log("Trying to send from the EP")
+        console.log(random)
         res.json(data)
     }
     catch(error){

@@ -4,7 +4,8 @@ class Pokemon{
         this.type1 = apiData.types[0].type.name,
         this.type2 = apiData.types[1]?.type.name ||"none",
         this.ability1 = apiData.abilities[0].ability.name,
-        this.ability2 = apiData.abilities[1]?.ability.name || "none"
+        this.ability2 = apiData.abilities[1]?.ability.name || "none",
+        this.img = apiData.sprites["other"]['official-artwork']['front_default']
     }
 
     getBattleData(){

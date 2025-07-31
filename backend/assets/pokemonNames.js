@@ -159,3 +159,5 @@ const generation1PokemonNames = [
     "Mewtwo",
     "Mew"
 ];
+
+module.exports = generation1PokemonNames
