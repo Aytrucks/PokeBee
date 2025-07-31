@@ -47,7 +47,7 @@ const BattlePage = (props) => {
 
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
-    const [img, setImg] = useState("../src/assets/react.svg")
+    const [img, setImg] = useState("https://archives.bulbagarden.net/media/upload/8/8e/Spr_3r_000.png")
 
     const [possibleNames, setPossibleNames] = useState([])
 
