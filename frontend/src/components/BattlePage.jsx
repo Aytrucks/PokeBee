@@ -6,6 +6,7 @@ import { generation1PokemonNames } from '../services/pokemonNames'
 
 const gen1 = generation1PokemonNames
 
+//Generates the suggest list of pokes based on typed input
 const FilterSuggestion = (props) => {
     const [show, setShow] = useState(false)
     const list = props.list
@@ -37,6 +38,7 @@ const FilterSuggestion = (props) => {
     
 }
 
+//contains all logic about rendering poke img, types abilites, how input works, etc
 const BattlePage = (props) => {
     //TODO: Make a object state that holds all the values of the answer poke and the guess poke
     
@@ -44,6 +46,7 @@ const BattlePage = (props) => {
     const [poke, setPoke] = useState({})
 
     const [guessClass, setGuessClass] = useState("test_text")
+    const [textboxClass, setTextboxClass] = useState("")
 
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
@@ -77,15 +80,16 @@ const BattlePage = (props) => {
     }, [])
 
     const handleSetName = (event) => {       
-        setName(event.target.value)    
-        setPossibleNames(generation1PokemonNames.filter(pokename=>pokename.toLowerCase().includes(name.toLowerCase())))
+        const inputName = event.target.value
+        setName(inputName)    
+        setPossibleNames(generation1PokemonNames.filter(pokename=>pokename.toLowerCase().includes(inputName.toLowerCase())))
     }
 
     const submitName = async (event) => {
         event.preventDefault()
         console.log(`The name of the poke is ${poke.name}`)
-
-        
+        setTextboxClass("feedback");
+        setTimeout(() => setTextboxClass(""), 1000);
         
         if(name.toLowerCase() === poke.name){
             setImg(poke.img)
@@ -178,7 +182,7 @@ const BattlePage = (props) => {
             </div>
         </div>
         <form onSubmit={submitName} className="test_input">
-            <input id="textbox" value={name} onChange={handleSetName} autocomplete="off"/>
+            <input id="textbox" className={textboxClass} value={name} onChange={handleSetName} autocomplete="off"/>
             <FilterSuggestion list={possibleNames}/>
             <button id="guess_submit" type="submit">Enter</button>
         </form>

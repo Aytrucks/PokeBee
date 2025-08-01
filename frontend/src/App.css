@@ -106,6 +106,10 @@ button:active{
     box-shadow: 0 0 30pt 2pt #9274b4;
 }
 
+#guess_text.correct:hover{
+    box-shadow: 0 0 30pt 2pt #f7ca69;
+}
+
 #guess_submit{
     color: #9274b4;
     background-color: rgb(31, 32, 36);
@@ -116,6 +120,11 @@ button:active{
 #guess_submit:hover{
     color: rgb(31, 32, 36);
     background-color: #9274b4;
+}
+
+#guess_submit:active{
+    color: rgb(31, 32, 36);
+    background-color: #c19bec;
 }
 
 #textbox{
@@ -137,6 +146,15 @@ button:active{
 
 #textbox:hover{
     box-shadow: 0 0 3pt 2pt #74b4a4;
+}
+
+#textbox.feedback {
+    animation: feedbackFlash 2s;
+}
+
+@keyframes feedbackFlash {
+    0%   { box-shadow: 0 0 30pt 10pt #f76988; }
+    100% { box-shadow: none; }
 }
 
 #pika{
