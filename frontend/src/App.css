@@ -203,7 +203,27 @@ button:active{
     box-shadow: 0 0 1pt 1pt #87eb97;
 }
 
-.attrib.poison{
-    color: #bb87eb;
-    box-shadow: 0 0 1pt 1pt #bb87eb;
+.attrib.water{
+    color: #87b6eb;
+    box-shadow: 0 0 1pt 1pt #87b6eb;
+}
+
+.attrib.fire{
+    color: #ebaf87;
+    box-shadow: 0 0 1pt 1pt #ebaf87;
+}
+
+.attrib.electric{
+    color: #dceb87;
+    box-shadow: 0 0 1pt 1pt #dceb87;
+}
+
+.attrib.dragon{
+    color: #4c55da;
+    box-shadow: 0 0 1pt 1pt #4c55da;
+}
+
+.attrib.steel{
+    color: #acafd6;
+    box-shadow: 0 0 1pt 1pt #acafd6;
 }
