@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { useEffect } from "react"
+import { motion } from "framer-motion"
 import Pokedex from '../services/pokedex'
 import Pokemon from "../models/Pokemon"
 import { generation1PokemonNames } from '../services/pokemonNames'
+import question_mark from '../assets/question.png'
 
 const gen1 = generation1PokemonNames
 
@@ -50,7 +52,7 @@ const BattlePage = (props) => {
 
     const [name, setName] = useState("")
     const [guess, setGuess] = useState("What is your guess?")
-    const [img, setImg] = useState("https://archives.bulbagarden.net/media/upload/8/8e/Spr_3r_000.png")
+    const [img, setImg] = useState(question_mark)
 
     const [possibleNames, setPossibleNames] = useState([])
 
@@ -87,7 +89,7 @@ const BattlePage = (props) => {
 
     const submitName = async (event) => {
         event.preventDefault()
-        console.log(`The name of the poke is ${poke.name}`)
+        //console.log(`The name of the poke is ${poke.name}`)
         setTextboxClass("feedback");
         setTimeout(() => setTextboxClass(""), 1000);
         
@@ -114,8 +116,8 @@ const BattlePage = (props) => {
                         name:`${name}`
                     })
                     const guessPoke = new Pokemon(res)
-                    console.log(guessPoke)
-                    console.log(poke)
+                    //console.log(guessPoke)
+                    //console.log(poke)
                     if(poke.type1 === guessPoke.type1 || poke.type1 === guessPoke.type2){
                         setType1(`${poke.type1}`)
                         setAttrib1(`attrib ${poke.type1}`)
@@ -146,11 +148,22 @@ const BattlePage = (props) => {
     }
 
     return (
-    <>
+    <motion.div
+    initial={{ opacity: 0 }} // Start invisible
+      animate={{ opacity: 1 }} // Fade in
+      exit={{ x: "50vw", opacity: 0 }} // Slide out to the left and fade
+      transition={{ duration: 0.25 }} // Set animation speed
+    >
         <div id="battle_header">
-            <div className="test_text">
+            <motion.div 
+            className="test_text"
+            whileHover={{ scale: 1.1 }}
+            animate={{ 
+                rotate: 360, 
+                transition: { duration: 0.25 } 
+                }}>
             Dex
-            </div>
+            </motion.div>
             <button id="test_btn" onClick={props.click}>
                 Back to Home
             </button>
@@ -188,7 +201,7 @@ const BattlePage = (props) => {
         </form>
       </div>
       
-    </>
+    </motion.div>
   )
 
 }
