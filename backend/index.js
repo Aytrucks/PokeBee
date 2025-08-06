@@ -20,7 +20,7 @@ app.get('/', async (req, res)=>{
 
 app.get('/api/test', async (req, res)=>{
     const random = Math.floor(Math.random()*151)
-    const url = `https://pokeapi.co/api/v2/pokemon/${generation1PokemonNames[34]}`
+    const url = `https://pokeapi.co/api/v2/pokemon/${generation1PokemonNames[random]}`
     try{
         const req2 = await axios.get(url)
         const data = req2.data
