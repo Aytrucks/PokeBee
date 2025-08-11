@@ -148,12 +148,21 @@ button:active{
     box-shadow: 0 0 3pt 2pt #74b4a4;
 }
 
-#textbox.feedback {
-    animation: feedbackFlash 2s;
+#textbox.feedback_wrong {
+    animation: feedbackFlash1 2s;
 }
 
-@keyframes feedbackFlash {
+@keyframes feedbackFlash1 {
     0%   { box-shadow: 0 0 30pt 10pt #f76988; }
+    100% { box-shadow: none; }
+}
+
+#textbox.feedback_right{
+    animation: feedbackFlash2 2s;
+}
+
+@keyframes feedbackFlash2 {
+    0%   { box-shadow: 0 0 30pt 10pt #69f7a9; }
     100% { box-shadow: none; }
 }
 

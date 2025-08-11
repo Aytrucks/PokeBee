@@ -73,9 +73,10 @@ const BattlePage = (props) => {
             setData(res)
             const mainPoke = new Pokemon(res)
             setPoke(mainPoke)
+            console.log(mainPoke)
         }
         catch(error){
-            console.error("We couldn't get the poke")
+            console.error("Pokemon not received from API request due to error", error)
         }
         }
         hook()
@@ -90,10 +91,13 @@ const BattlePage = (props) => {
     const submitName = async (event) => {
         event.preventDefault()
         //console.log(`The name of the poke is ${poke.name}`)
-        setTextboxClass("feedback");
+        setTextboxClass("feedback_wrong");
         setTimeout(() => setTextboxClass(""), 1000);
         
         if(name.toLowerCase() === poke.name){
+            setTextboxClass("feedback_right");
+            setTimeout(() => setTextboxClass(""), 1000);
+
             setImg(poke.img)
             setGuess(`${poke.name}`)
             setGuessClass("test_text correct")
@@ -135,7 +139,7 @@ const BattlePage = (props) => {
                     
                 }
                 catch(error){
-                    console.error(error)
+                    console.error("Pokemon not able to be sent through POST request due to error", error)
                 }
                 
             }

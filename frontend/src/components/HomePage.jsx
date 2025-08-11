@@ -9,7 +9,7 @@ const HomePage = (props)=>{
       transition={{ duration: 0.25 }} // Set animation speed
     >
     <div  id="home_container">
-      <div class="test_text">
+      <div className="test_text">
         Home Page
       </div>
 
