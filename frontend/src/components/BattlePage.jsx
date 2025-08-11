@@ -43,7 +43,18 @@ const FilterSuggestion = (props) => {
 //contains all logic about rendering poke img, types abilites, how input works, etc
 const BattlePage = (props) => {
     //TODO: Make a object state that holds all the values of the answer poke and the guess poke
-    
+    const [display, setDisplay] = useState({
+        guess: "What is your guess?",
+        guessClass: "test_text",
+        img: question_mark,
+        type1: "?",
+        attrib1: "attrib",
+        type2: "?",
+        attrib2: "attrib",
+        ability1: "?",
+        ability2: "?"
+    })
+
     const [data, setData] = useState(null)
     const [poke, setPoke] = useState({})
 
@@ -100,6 +111,19 @@ const BattlePage = (props) => {
         
         if(name.toLowerCase() === poke.name){
             setFeedback("feedback_right")
+            setDisplay(prevDisplay =>({
+                ...prevDisplay,
+                img: poke.img,
+                guess:`${poke.name}`,
+                guessClass:"test_text correct",
+                type1: `${poke.type1}`,
+                attrib1: `attrib ${poke.type1}`,
+                type2: `${poke.type2}`,
+                attrib2: `attrib ${poke.type2}`,
+                ability1: `${poke.ability1}`,
+                ability2: `${poke.ability2}`
+            }))
+            console.log(display)
 
             setImg(poke.img)
             setGuess(`${poke.name}`)
