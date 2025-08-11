@@ -76,7 +76,7 @@ const BattlePage = (props) => {
             console.log(mainPoke)
         }
         catch(error){
-            console.error("We couldn't get the poke", error)
+            console.error("Pokemon not received from API request due to error", error)
         }
         }
         hook()
@@ -139,7 +139,7 @@ const BattlePage = (props) => {
                     
                 }
                 catch(error){
-                    console.error("Problem sending the poke", error)
+                    console.error("Pokemon not able to be sent through POST request due to error", error)
                 }
                 
             }
