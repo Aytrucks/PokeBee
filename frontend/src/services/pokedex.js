@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const url = "/api/test3"
+const url = "/api/test"
 
 const getAll = () =>{
     const req = axios.get(url)

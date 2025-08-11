@@ -16,7 +16,7 @@ const FilterSuggestion = (props) => {
     useEffect(()=>{
         const timer = setTimeout(()=>{
             setShow(true)
-        }, 1000)
+        }, 700)
         return () =>{
             clearTimeout(timer)
             setShow(false)
@@ -88,15 +88,18 @@ const BattlePage = (props) => {
         setPossibleNames(generation1PokemonNames.filter(pokename=>pokename.toLowerCase().includes(inputName.toLowerCase())))
     }
 
+    const setFeedback = (type) =>{
+        setTextboxClass(type);
+        setTimeout(() => setTextboxClass(""), 1000);
+    }
+
     const submitName = async (event) => {
         event.preventDefault()
         //console.log(`The name of the poke is ${poke.name}`)
-        setTextboxClass("feedback_wrong");
-        setTimeout(() => setTextboxClass(""), 1000);
+        
         
         if(name.toLowerCase() === poke.name){
-            setTextboxClass("feedback_right");
-            setTimeout(() => setTextboxClass(""), 1000);
+            setFeedback("feedback_right")
 
             setImg(poke.img)
             setGuess(`${poke.name}`)
@@ -120,21 +123,54 @@ const BattlePage = (props) => {
                         name:`${name}`
                     })
                     const guessPoke = new Pokemon(res)
+                    const guessTypes = [guessPoke.type1, guessPoke.type2]
+                    const guessAbilites = [guessPoke.ability1, guessPoke.ability2]
                     //console.log(guessPoke)
                     //console.log(poke)
-                    if(poke.type1 === guessPoke.type1 || poke.type1 === guessPoke.type2){
-                        setType1(`${poke.type1}`)
-                        setAttrib1(`attrib ${poke.type1}`)
+
+                    const checkPoke = [
+                        {
+                            value: poke.type1,
+                            guess: guessTypes,
+                            action: ()=>{
+                                setType1(`${poke.type1}`)
+                                setAttrib1(`attrib ${poke.type1}`)
+                            }
+                        },
+                        {
+                            value: poke.type2,
+                            guess: guessTypes,
+                            action: ()=>{
+                                setType2(`${poke.type2}`)
+                                setAttrib2(`attrib ${poke.type2}`)
+                            }
+                        },
+                        {
+                            value: poke.ability1,
+                            guess: guessAbilites,
+                            action: ()=>{
+                                setAbility1(`${poke.ability1}`)
+                            }
+                        },
+                        {
+                            value: poke.ability2,
+                            guess: guessAbilites,
+                            action: ()=>{
+                                setAbility2(`${poke.ability2}`)
+                            }
+                        },
+                    ]
+                    let partial = false
+                    for(const check of checkPoke){
+                        if(check.value && check.guess.includes(check.value)){
+                            check.action()
+                            partial = true
+                        }
                     }
-                    if(poke.type2 === guessPoke.type1 || poke.type2 === guessPoke.type2){
-                        setType2(`${poke.type2}`)
-                        setAttrib2(`attrib ${poke.type2}`)
-                    }
-                    if(poke.ability1 === guessPoke.ability1 || poke.ability1 === guessPoke.ability2){
-                        setAbility1(poke.ability1)
-                    }
-                    if(poke.ability2 === guessPoke.ability1 || poke.ability2 === guessPoke.ability2){
-                        setAbility2(poke.ability2)
+                    if(partial){
+                        setFeedback("feedback_partial")
+                    }else{
+                        setFeedback("feedback_wrong")
                     }
                     
                 }
@@ -145,6 +181,7 @@ const BattlePage = (props) => {
             }
             else{
                 setGuess(name === "" ? "Nice guess dude." : "Not a Pokemon");
+                setFeedback("feedback_wrong")
             }
             
             
@@ -181,25 +218,38 @@ const BattlePage = (props) => {
         <img src= {img} id="pika"/>
       </div>
       <div className="bottom_container">
-        
+                
         <div className="container_poke">
-            <div className={attrib1}>
-                {type1}
+            <div className="subcontainer_poke">
+                <div>Type</div>
+                <div className={attrib1}>
+                    {type1}
+                </div>
             </div>
-            <div className={attrib2}>
+            
+            <div className="subcontainer_poke">Type
+                <div className={attrib2}>
                 {type2}
+                </div>
             </div>
+            
         </div>
         <div className="container_poke">
-            <div className="attrib">
+            <div className="subcontainer_poke">
+                Ability
+                <div className="attrib">
                 {ability1}
+                </div>
             </div>
-            <div className="attrib">
+            
+            <div className="subcontainer_poke">Ability
+                <div className="attrib">
                 {ability2}
+                </div>
             </div>
         </div>
         <form onSubmit={submitName} className="test_input">
-            <input id="textbox" className={textboxClass} value={name} onChange={handleSetName} autocomplete="off"/>
+            <input id="textbox" className={textboxClass} value={name} onChange={handleSetName} autoComplete="off"/>
             <FilterSuggestion list={possibleNames}/>
             <button id="guess_submit" type="submit">Enter</button>
         </form>
