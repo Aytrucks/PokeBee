@@ -15,14 +15,15 @@ const BattlePage = (props) => {
     //TODO: Make a object state that holds all the values of the answer poke and the guess poke
     const [display, setDisplay] = useState({
         guess: "What is your guess?",
-        guessClass: "test_text",
+        guessClass: "general-text",
         img: question_mark,
         type1: "?",
         attrib1: "attrib",
         type2: "?",
         attrib2: "attrib",
         ability1: "?",
-        ability2: "?"
+        ability2: "?",
+        lives: 5
     })
 
     const [poke, setPoke] = useState({})
@@ -69,7 +70,7 @@ const BattlePage = (props) => {
                 ...prevDisplay,
                 img: poke.img,
                 guess:`${poke.name}`,
-                guessClass:"test_text correct",
+                guessClass:"general-text correct",
                 type1: `${poke.type1}`,
                 attrib1: `attrib ${poke.type1}`,
                 type2: `${poke.type2}`,
@@ -162,6 +163,10 @@ const BattlePage = (props) => {
                         setFeedback("feedback_wrong")
                         setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
                     }
+                    setDisplay(prevDisplay=>({
+                        ...prevDisplay,
+                        lives: prevDisplay["lives"] - 1
+                    }))
                     
                 }
                 catch(error){
@@ -177,6 +182,10 @@ const BattlePage = (props) => {
                 }))
                 setFeedback("feedback_wrong")
                 setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
+                setDisplay(prevDisplay=>({
+                        ...prevDisplay,
+                        lives: prevDisplay["lives"] - 1
+                    }))
             }
             
             
@@ -185,7 +194,7 @@ const BattlePage = (props) => {
 
     return (
     <motion.div
-    initial={{ opacity: 0 }} // Start invisible
+    initial={{ opacity: 0.5 }} // Start invisible
       animate={{ opacity: 1 }} // Fade in
       exit={{ x: "50vw", opacity: 0 }} // Slide out to the left and fade
       transition={{ duration: 0.25 }} // Set animation speed
@@ -197,19 +206,24 @@ const BattlePage = (props) => {
         <div id="section2">
         <div id="battle_header">
             <motion.div 
-            className="test_text"
+            className="general-text"
             whileHover={{ scale: 1.1 }}
-            animate={{ 
-                rotate: 360, 
-                transition: { duration: 0.25 } 
-                }}>
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4.5, repeat: 2}}
+            >
             Dex
             </motion.div>
             <button id="test_btn" onClick={props.click}>
                 Back to Home
             </button>
-            <div className={display.guessClass} id="guess_text">
-                {display.guess}
+            <div id="lives-guess">
+                <div className="general-text" id="lives-text">
+                    {display.lives}
+                </div>
+                <div className={display.guessClass} id="guess_text">
+                    
+                    {display.guess}
+                </div>
             </div>
             
         </div>

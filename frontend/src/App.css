@@ -9,10 +9,6 @@ body{
 
 }
 
-.incorrect, .partial, .correct{
-    
-}
-
 .incorrect{
     color: #f76988;
 }
@@ -32,13 +28,16 @@ body{
 
 #section1, #section3{
     min-width: 250px;
+    min-height: 250px;
     display: flex;
     
     justify-content: center;
 
     align-self: center;
-    
+}
 
+#section1{
+    padding-bottom: 200px;
 }
 
 
@@ -49,9 +48,9 @@ body{
 }
 
 .pokebox{
-    min-width: 500px;
-    min-height: 500px;
-    background-color: rgb(222, 226, 238);
+    min-width: 450px;
+    min-height: 300px;
+    background-color: rgb(239, 240, 243);
     
     padding: 5px;
     margin: 5px;
@@ -98,7 +97,7 @@ button:active{
     background-color: aquamarine;
 }
 
-.test_text{
+.general-text{
     font-size: 30px;
     font-weight: 900;
     border-radius: 15px;
@@ -110,7 +109,7 @@ button:active{
     transition-duration: 0.25s;
 }
 
-.test_text:hover{
+.general-text:hover{
     box-shadow: 0 0 30pt 2pt #74b4a4;
 }
 
@@ -122,18 +121,34 @@ button:active{
     align-items: center;
 }
 
+#lives-guess{
+    display: flex;
+}
+
+#lives-text{
+    
+    color: #d381b8;
+    background-color: rgb(31, 32, 36);
+    border: 7px solid #d381b8;
+    
+    padding-left: 25px;
+    padding-right: 25px;
+
+    transition-duration: 0.25s;
+}
+
 #guess_text{
     color: #9274b4;
     background-color: rgb(31, 32, 36);
-    border: 2px solid #9274b4;
-    border-radius: 8px;
+    border: 7px solid #9274b4;
+    
 
     transition-duration: 0.25s;
 }
 
 #guess_text.correct{
     color: #69f7a9;
-    border: 2px solid #69f7a9;
+    border: 7px solid #69f7a9;
 }
 
 #guess_text:hover{
@@ -214,8 +229,8 @@ button:active{
 }
 
 #pika{
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     display: flex;
     align-self: center;
 
