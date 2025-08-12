@@ -5,40 +5,9 @@ import Pokedex from '../services/pokedex'
 import Pokemon from "../models/Pokemon"
 import { generation1PokemonNames } from '../services/pokemonNames'
 import question_mark from '../assets/question.png'
+import FilterSuggestion from "./FilterSuggestion"
 
 const gen1 = generation1PokemonNames
-
-//Generates the suggest list of pokes based on typed input
-const FilterSuggestion = (props) => {
-    const [show, setShow] = useState(false)
-    const list = props.list
-
-    useEffect(()=>{
-        const timer = setTimeout(()=>{
-            setShow(true)
-        }, 700)
-        return () =>{
-            clearTimeout(timer)
-            setShow(false)
-        }
-    },[list])
-
-    if(list.length === 0 && show){
-        return <div>
-            No Suggestions Yet!
-        </div>
-    }
-    if(list.length <= 10 && show){
-        return <ul>
-        {
-            list.map(item => 
-                <li key={item}>{item}</li>
-            )
-        }
-    </ul>
-    }
-    
-}
 
 //contains all logic about rendering poke img, types abilites, how input works, etc
 const BattlePage = (props) => {
@@ -55,33 +24,16 @@ const BattlePage = (props) => {
         ability2: "?"
     })
 
-    const [data, setData] = useState(null)
     const [poke, setPoke] = useState({})
-
-    const [guessClass, setGuessClass] = useState("test_text")
     const [textboxClass, setTextboxClass] = useState("")
-
     const [name, setName] = useState("")
-    const [guess, setGuess] = useState("What is your guess?")
-    const [img, setImg] = useState(question_mark)
-
     const [possibleNames, setPossibleNames] = useState([])
-
-    const [type1, setType1] = useState("?")
-    const [attrib1, setAttrib1] = useState("attrib")
-    const [ability1, setAbility1] = useState("?")
-
-    const [type2, setType2] = useState("?")
-    const [attrib2, setAttrib2] = useState("attrib")
-    const [ability2, setAbility2] = useState("?")
-
     
     useEffect(() => {
         async function hook(){
         try{
             const res = await Pokedex.getAll()
-            
-            setData(res)
+  
             const mainPoke = new Pokemon(res)
             setPoke(mainPoke)
             console.log(mainPoke)
@@ -108,7 +60,6 @@ const BattlePage = (props) => {
         event.preventDefault()
         //console.log(`The name of the poke is ${poke.name}`)
         
-        
         if(name.toLowerCase() === poke.name){
             setFeedback("feedback_right")
             setDisplay(prevDisplay =>({
@@ -124,18 +75,6 @@ const BattlePage = (props) => {
                 ability2: `${poke.ability2}`
             }))
             console.log(display)
-
-            setImg(poke.img)
-            setGuess(`${poke.name}`)
-            setGuessClass("test_text correct")
-
-            setType1(`${poke.type1}`)
-            setAttrib1(`attrib ${poke.type1}`)
-            setAbility1(poke.ability1)
-
-            setType2(`${poke.type2}`)
-            setAttrib2(`attrib ${poke.type2}`)
-            setAbility2(poke.ability2)
         } 
         else{
             let names = generation1PokemonNames.map(pokename =>{
@@ -146,9 +85,14 @@ const BattlePage = (props) => {
                     const res = await Pokedex.sendPoke({
                         name:`${name}`
                     })
+                    
                     const guessPoke = new Pokemon(res)
                     const guessTypes = [guessPoke.type1, guessPoke.type2]
                     const guessAbilites = [guessPoke.ability1, guessPoke.ability2]
+                    setDisplay((prevDisplay)=>({
+                        ...prevDisplay,
+                        guess: `${guessPoke.name}`
+                    }))
                     //console.log(guessPoke)
                     //console.log(poke)
 
@@ -157,30 +101,47 @@ const BattlePage = (props) => {
                             value: poke.type1,
                             guess: guessTypes,
                             action: ()=>{
-                                setType1(`${poke.type1}`)
-                                setAttrib1(`attrib ${poke.type1}`)
+
+                                setDisplay((prevDisplay)=>({
+                                    ...prevDisplay,
+                                    type1: `${poke.type1}`,
+                                    attrib1: `attrib ${poke.type1}`
+                                }))
+                                
                             }
                         },
                         {
                             value: poke.type2,
                             guess: guessTypes,
                             action: ()=>{
-                                setType2(`${poke.type2}`)
-                                setAttrib2(`attrib ${poke.type2}`)
+
+                                setDisplay((prevDisplay)=>({
+                                    ...prevDisplay,
+                                    type2: `${poke.type2}`,
+                                    attrib2: `attrib ${poke.type2}`
+                                }))
                             }
                         },
                         {
                             value: poke.ability1,
                             guess: guessAbilites,
                             action: ()=>{
-                                setAbility1(`${poke.ability1}`)
+
+                                setDisplay((prevDisplay)=>({
+                                    ...prevDisplay,
+                                    ability1: `${poke.ability1}`
+                                }))
                             }
                         },
                         {
                             value: poke.ability2,
                             guess: guessAbilites,
                             action: ()=>{
-                                setAbility2(`${poke.ability2}`)
+
+                                setDisplay((prevDisplay)=>({
+                                    ...prevDisplay,
+                                    ability2: `${poke.ability2}`
+                                }))
                             }
                         },
                     ]
@@ -204,7 +165,11 @@ const BattlePage = (props) => {
                 
             }
             else{
-                setGuess(name === "" ? "Nice guess dude." : "Not a Pokemon");
+                
+                setDisplay(prevDisplay=>({
+                    ...prevDisplay,
+                    guess: name === "" ? "Nice guess dude." : "Not a Pokemon"
+                }))
                 setFeedback("feedback_wrong")
             }
             
@@ -232,28 +197,28 @@ const BattlePage = (props) => {
             <button id="test_btn" onClick={props.click}>
                 Back to Home
             </button>
-            <div className={guessClass} id="guess_text">
-                {guess}
+            <div className={display.guessClass} id="guess_text">
+                {display.guess}
             </div>
             
         </div>
       
       <div className="pokebox">
-        <img src= {img} id="pika"/>
+        <img src= {display.img} id="pika"/>
       </div>
       <div className="bottom_container">
                 
         <div className="container_poke">
             <div className="subcontainer_poke">
                 <div>Type</div>
-                <div className={attrib1}>
-                    {type1}
+                <div className={display.attrib1}>
+                    {display.type1}
                 </div>
             </div>
             
             <div className="subcontainer_poke">Type
-                <div className={attrib2}>
-                {type2}
+                <div className={display.attrib2}>
+                {display.type2}
                 </div>
             </div>
             
@@ -262,13 +227,13 @@ const BattlePage = (props) => {
             <div className="subcontainer_poke">
                 Ability
                 <div className="attrib">
-                {ability1}
+                {display.ability1}
                 </div>
             </div>
             
             <div className="subcontainer_poke">Ability
                 <div className="attrib">
-                {ability2}
+                {display.ability2}
                 </div>
             </div>
         </div>
