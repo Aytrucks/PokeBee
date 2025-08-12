@@ -1,5 +1,6 @@
 *{
     font-family: 'Nunito', sans-serif;
+    list-style-type: none;
 }
 
 body{
@@ -7,6 +8,39 @@ body{
     color:#74b4a4;
 
 }
+
+.incorrect, .partial, .correct{
+    
+}
+
+.incorrect{
+    color: #f76988;
+}
+
+.partial{
+    color: #ece585;
+}
+
+.correct{
+    color: #69f7a9;
+}
+
+#big{
+    display: flex;
+    
+}
+
+#section1, #section3{
+    min-width: 250px;
+    display: flex;
+    
+    justify-content: center;
+
+    align-self: center;
+    
+
+}
+
 
 #battle_header{
     display: flex;
@@ -98,8 +132,8 @@ button:active{
 }
 
 #guess_text.correct{
-    color: #f7ca69;
-    border: 2px solid #f7ca69;
+    color: #69f7a9;
+    border: 2px solid #69f7a9;
 }
 
 #guess_text:hover{
@@ -107,7 +141,7 @@ button:active{
 }
 
 #guess_text.correct:hover{
-    box-shadow: 0 0 30pt 2pt #f7ca69;
+    box-shadow: 0 0 30pt 2pt #69f7a9;
 }
 
 #guess_submit{
@@ -125,6 +159,10 @@ button:active{
 #guess_submit:active{
     color: rgb(31, 32, 36);
     background-color: #c19bec;
+}
+
+#filterList{
+    padding-right: 40px;
 }
 
 #textbox{
@@ -222,6 +260,7 @@ button:active{
     align-self: center;
 }
 
+/* Types of Pokemon */
 .attrib.grass{
     color: #87eb97;
     box-shadow: 0 0 1pt 1pt #87eb97;

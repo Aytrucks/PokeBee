@@ -1,5 +1,8 @@
 //Generates the suggest list of pokes based on typed input
+import { useState } from "react"
+import { useEffect } from "react"
 const FilterSuggestion = (props) => {
+
     const [show, setShow] = useState(false)
     const list = props.list
 
@@ -19,7 +22,7 @@ const FilterSuggestion = (props) => {
         </div>
     }
     if(list.length <= 10 && show){
-        return <ul>
+        return <ul id="filterList" >
         {
             list.map(item => 
                 <li key={item}>{item}</li>

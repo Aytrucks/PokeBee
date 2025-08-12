@@ -6,6 +6,7 @@ import Pokemon from "../models/Pokemon"
 import { generation1PokemonNames } from '../services/pokemonNames'
 import question_mark from '../assets/question.png'
 import FilterSuggestion from "./FilterSuggestion"
+import GuessedList from "./GuessedList"
 
 const gen1 = generation1PokemonNames
 
@@ -28,6 +29,7 @@ const BattlePage = (props) => {
     const [textboxClass, setTextboxClass] = useState("")
     const [name, setName] = useState("")
     const [possibleNames, setPossibleNames] = useState([])
+    const [guessedList, setGuessedList] = useState({})
     
     useEffect(() => {
         async function hook(){
@@ -62,6 +64,7 @@ const BattlePage = (props) => {
         
         if(name.toLowerCase() === poke.name){
             setFeedback("feedback_right")
+            setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"correct"}));
             setDisplay(prevDisplay =>({
                 ...prevDisplay,
                 img: poke.img,
@@ -154,8 +157,10 @@ const BattlePage = (props) => {
                     }
                     if(partial){
                         setFeedback("feedback_partial")
+                        setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"partial"}));
                     }else{
                         setFeedback("feedback_wrong")
+                        setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
                     }
                     
                 }
@@ -171,6 +176,7 @@ const BattlePage = (props) => {
                     guess: name === "" ? "Nice guess dude." : "Not a Pokemon"
                 }))
                 setFeedback("feedback_wrong")
+                setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
             }
             
             
@@ -184,6 +190,11 @@ const BattlePage = (props) => {
       exit={{ x: "50vw", opacity: 0 }} // Slide out to the left and fade
       transition={{ duration: 0.25 }} // Set animation speed
     >
+        <div id="big">
+        <div id="section1">
+            <GuessedList guesses={guessedList}/>
+        </div>
+        <div id="section2">
         <div id="battle_header">
             <motion.div 
             className="test_text"
@@ -204,7 +215,11 @@ const BattlePage = (props) => {
         </div>
       
       <div className="pokebox">
-        <img src= {display.img} id="pika"/>
+        <motion.div
+        id="pika"
+        whileHover={{ scale: 1.1 }}>
+        <img src= {display.img} />
+        </motion.div>
       </div>
       <div className="bottom_container">
                 
@@ -243,7 +258,9 @@ const BattlePage = (props) => {
             <button id="guess_submit" type="submit">Enter</button>
         </form>
       </div>
-      
+      </div>
+       <div id="section3"><div>3</div></div>
+       </div>
     </motion.div>
   )
 
