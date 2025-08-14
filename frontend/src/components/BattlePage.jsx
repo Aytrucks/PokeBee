@@ -59,6 +59,28 @@ const BattlePage = (props) => {
         setTimeout(() => setTextboxClass(""), 1000);
     }
 
+    const updateDisplay = (value, newValue) =>{
+        setDisplay((prevDisplay)=>({
+            ...prevDisplay,
+            value: `${newValue}`,
+        }))
+    }
+
+    const endGame = () =>{
+        setDisplay(prevDisplay =>({
+            ...prevDisplay,
+            img: poke.img,
+            guess:`${poke.name}`,
+            guessClass:"general-text correct",
+            type1: `${poke.type1}`,
+            attrib1: `attrib ${poke.type1}`,
+            type2: `${poke.type2}`,
+            attrib2: `attrib ${poke.type2}`,
+            ability1: `${poke.ability1}`,
+            ability2: `${poke.ability2}`
+        }))
+    }
+
     const submitName = async (event) => {
         event.preventDefault()
         //console.log(`The name of the poke is ${poke.name}`)
@@ -66,128 +88,112 @@ const BattlePage = (props) => {
         if(name.toLowerCase() === poke.name){
             setFeedback("feedback_right")
             setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"correct"}));
-            setDisplay(prevDisplay =>({
-                ...prevDisplay,
-                img: poke.img,
-                guess:`${poke.name}`,
-                guessClass:"general-text correct",
-                type1: `${poke.type1}`,
-                attrib1: `attrib ${poke.type1}`,
-                type2: `${poke.type2}`,
-                attrib2: `attrib ${poke.type2}`,
-                ability1: `${poke.ability1}`,
-                ability2: `${poke.ability2}`
-            }))
+            endGame();
             console.log(display)
+            return
         } 
-        else{
-            let names = generation1PokemonNames.map(pokename =>{
-                return pokename.toLowerCase()
-            })
-            if(names.includes(name.toLowerCase())){
-                try{
-                    const res = await Pokedex.sendPoke({
-                        name:`${name}`
-                    })
-                    
-                    const guessPoke = new Pokemon(res)
-                    const guessTypes = [guessPoke.type1, guessPoke.type2]
-                    const guessAbilites = [guessPoke.ability1, guessPoke.ability2]
-                    setDisplay((prevDisplay)=>({
-                        ...prevDisplay,
-                        guess: `${guessPoke.name}`
-                    }))
-                    //console.log(guessPoke)
-                    //console.log(poke)
+        if(display.lives <= 1){
+            setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
+            endGame()
+            setDisplay(prevDisplay=>({
+                ...prevDisplay,
+                guess: "Tough Luck! Try again?",
+                lives: prevDisplay["lives"] - 1
+            }))
+            console.log("Trying to enter with 0 lives? For shame")
+            return
+        }
 
-                    const checkPoke = [
-                        {
-                            value: poke.type1,
-                            guess: guessTypes,
-                            action: ()=>{
-
-                                setDisplay((prevDisplay)=>({
-                                    ...prevDisplay,
-                                    type1: `${poke.type1}`,
-                                    attrib1: `attrib ${poke.type1}`
-                                }))
-                                
-                            }
-                        },
-                        {
-                            value: poke.type2,
-                            guess: guessTypes,
-                            action: ()=>{
-
-                                setDisplay((prevDisplay)=>({
-                                    ...prevDisplay,
-                                    type2: `${poke.type2}`,
-                                    attrib2: `attrib ${poke.type2}`
-                                }))
-                            }
-                        },
-                        {
-                            value: poke.ability1,
-                            guess: guessAbilites,
-                            action: ()=>{
-
-                                setDisplay((prevDisplay)=>({
-                                    ...prevDisplay,
-                                    ability1: `${poke.ability1}`
-                                }))
-                            }
-                        },
-                        {
-                            value: poke.ability2,
-                            guess: guessAbilites,
-                            action: ()=>{
-
-                                setDisplay((prevDisplay)=>({
-                                    ...prevDisplay,
-                                    ability2: `${poke.ability2}`
-                                }))
-                            }
-                        },
-                    ]
-                    let partial = false
-                    for(const check of checkPoke){
-                        if(check.value && check.guess.includes(check.value)){
-                            check.action()
-                            partial = true
-                        }
-                    }
-                    if(partial){
-                        setFeedback("feedback_partial")
-                        setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"partial"}));
-                    }else{
-                        setFeedback("feedback_wrong")
-                        setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
-                    }
-                    setDisplay(prevDisplay=>({
-                        ...prevDisplay,
-                        lives: prevDisplay["lives"] - 1
-                    }))
-                    
-                }
-                catch(error){
-                    console.error("Pokemon not able to be sent through POST request due to error", error)
-                }
+        let names = generation1PokemonNames.map(pokename =>{
+            return pokename.toLowerCase()
+        })
+        
+        if(names.includes(name.toLowerCase()) && display.lives > 0){
+            try{
+                const res = await Pokedex.sendPoke({
+                    name:`${name}`
+                })
                 
-            }
-            else{
-                
-                setDisplay(prevDisplay=>({
+                const guessPoke = new Pokemon(res)
+                const guessTypes = [guessPoke.type1, guessPoke.type2]
+                const guessAbilites = [guessPoke.ability1, guessPoke.ability2]
+                setDisplay((prevDisplay)=>({
                     ...prevDisplay,
-                    guess: name === "" ? "Nice guess dude." : "Not a Pokemon"
+                    "guess": `${guessPoke.name}`,
+                    lives: prevDisplay["lives"] - 1
                 }))
-                setFeedback("feedback_wrong")
-                setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
-                setDisplay(prevDisplay=>({
-                        ...prevDisplay,
-                        lives: prevDisplay["lives"] - 1
-                    }))
+                
+                //console.log(guessPoke)
+                //console.log(poke)
+
+                const checkPoke = [
+                    {
+                        value: poke.type1,
+                        guess: guessTypes,
+                        action: ()=>{
+
+                            setDisplay((prevDisplay)=>({
+                                ...prevDisplay,
+                                type1: `${poke.type1}`,
+                                attrib1: `attrib ${poke.type1}`
+                            }))
+                            
+                        }
+                    },
+                    {
+                        value: poke.type2,
+                        guess: guessTypes,
+                        action: ()=>{
+
+                            setDisplay((prevDisplay)=>({
+                                ...prevDisplay,
+                                type2: `${poke.type2}`,
+                                attrib2: `attrib ${poke.type2}`
+                            }))
+                        }
+                    },
+                    {
+                        value: poke.ability1,
+                        guess: guessAbilites,
+                        action: ()=>{
+
+                            setDisplay((prevDisplay)=>({
+                                ...prevDisplay,
+                                ability1: `${poke.ability1}`
+                            }))
+                        }
+                    },
+                    {
+                        value: poke.ability2,
+                        guess: guessAbilites,
+                        action: ()=>{
+
+                            setDisplay((prevDisplay)=>({
+                                ...prevDisplay,
+                                ability2: `${poke.ability2}`
+                            }))
+                        }
+                    },
+                ]
+                let partial = false
+                for(const check of checkPoke){
+                    if(check.value && check.guess.includes(check.value)){
+                        check.action()
+                        partial = true
+                    }
+                }
+                if(partial){
+                    setFeedback("feedback_partial")
+                    setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"partial"}));
+                }else{
+                    setFeedback("feedback_wrong")
+                    setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
+                }
+                
             }
-            
+            catch(error){
+                console.error("Pokemon not able to be sent through POST request due to error", error)
+            }
             
         }
     }
@@ -205,13 +211,15 @@ const BattlePage = (props) => {
         </div>
         <div id="section2">
         <div id="battle_header">
-            <motion.div 
-            className="general-text"
-            whileHover={{ scale: 1.1 }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 4.5, repeat: 2}}
+            <motion.div
+                className="general-text"
+
+                animate={{ rotate: [-20,20,0] }}
+                transition={{
+                    duration: 0.75,         
+                }}
             >
-            Dex
+                Dex
             </motion.div>
             <button id="test_btn" onClick={props.click}>
                 Back to Home
@@ -231,7 +239,8 @@ const BattlePage = (props) => {
       <div className="pokebox">
         <motion.div
         id="pika"
-        whileHover={{ scale: 1.1 }}>
+        whileHover={{ scale: 1.1 }}
+        transition={{ duration: 0.1 }}>
         <img src= {display.img} />
         </motion.div>
       </div>
