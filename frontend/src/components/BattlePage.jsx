@@ -23,7 +23,7 @@ const BattlePage = (props) => {
         attrib2: "attrib",
         ability1: "?",
         ability2: "?",
-        lives: 5
+        lives: 8
     })
 
     const [poke, setPoke] = useState({})
@@ -85,24 +85,14 @@ const BattlePage = (props) => {
         event.preventDefault()
         //console.log(`The name of the poke is ${poke.name}`)
         
-        if(name.toLowerCase() === poke.name){
+        if(name.toLowerCase() === poke.name && display.lives > 0){
             setFeedback("feedback_right")
             setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"correct"}));
             endGame();
             console.log(display)
             return
         } 
-        if(display.lives <= 1){
-            setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
-            endGame()
-            setDisplay(prevDisplay=>({
-                ...prevDisplay,
-                guess: "Tough Luck! Try again?",
-                lives: prevDisplay["lives"] - 1
-            }))
-            console.log("Trying to enter with 0 lives? For shame")
-            return
-        }
+        
 
         let names = generation1PokemonNames.map(pokename =>{
             return pokename.toLowerCase()
@@ -119,8 +109,7 @@ const BattlePage = (props) => {
                 const guessAbilites = [guessPoke.ability1, guessPoke.ability2]
                 setDisplay((prevDisplay)=>({
                     ...prevDisplay,
-                    "guess": `${guessPoke.name}`,
-                    lives: prevDisplay["lives"] - 1
+                    "guess": `${guessPoke.name}`
                 }))
                 
                 //console.log(guessPoke)
@@ -182,13 +171,30 @@ const BattlePage = (props) => {
                         partial = true
                     }
                 }
+                if(partial && display.lives <= 1){
+                    setFeedback("feedback_partial")
+                    setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"partial"}));
+                    endGame();
+                    setDisplay(prevDisplay=>({
+                        ...prevDisplay,
+                        guess: "Oh well, try again?",
+                        lives: prevDisplay["lives"] - 1
+                    }))
+                    
+                    return
+                }
                 if(partial){
                     setFeedback("feedback_partial")
                     setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"partial"}));
-                }else{
+                }else if(display.lives > 1){
                     setFeedback("feedback_wrong")
                     setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
                 }
+                console.log(display.lives)
+                setDisplay(prevDisplay=>({
+                    ...prevDisplay,
+                    lives: prevDisplay["lives"] - 1
+                }))
                 
             }
             catch(error){
@@ -196,6 +202,25 @@ const BattlePage = (props) => {
             }
             
         }
+        else if(display.lives > 0){
+        
+            setFeedback("feedback_wrong")
+            setGuessedList(prevGuessedList => ({...prevGuessedList, [name]:"incorrect"}));
+            setDisplay(prevDisplay=>({
+                ...prevDisplay,
+                guess: name === "" ? "Nice guess dude." : "Not a Pokemon",
+                lives: prevDisplay["lives"] - 1
+            }))
+        }
+        else{
+            setDisplay(prevDisplay=>({
+                ...prevDisplay,
+                guess: "No more lives!"
+            }))
+        }
+            
+            
+        
     }
 
     return (
